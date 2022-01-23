@@ -33,9 +33,10 @@ router.post('/', (req, res) => {
     // create a new category
     console.log(req.body());
     try {
-        //     const createNewCategory = Category.create({
+        const createNewCategory = Category.create({
+            res.json(req.params.id);
 
-        //     })
+        })
     } catch {}
 });
 

@@ -1,8 +1,7 @@
 const router = require('express').Router();
-const { json } = require('sequelize/types');
 const { Product, Category, Tag, ProductTag } = require('../../models');
 const { findByPk } = require('../../models/Product');
-
+const { DataTypes } = require("sequelize");
 // The `/api/products` endpoint
 
 // get all products
@@ -12,7 +11,7 @@ router.get('/', (req, res) => {
                 // find all products
                 // be sure to include its associated Category and Tag data
         });
-        res.json();
+        res.json(body);
     })
     // get one product
 router.get('/:id', (req, res) => {

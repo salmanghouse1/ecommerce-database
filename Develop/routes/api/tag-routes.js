@@ -20,6 +20,8 @@ router.get('/:id', (req, res) => {
     Tag.findByPk({
         where: { id: req.params.id },
         include: [Product]
+    }).then((data) => {
+        res.json(data);
     });
 
     // find a single tag by its `id`
@@ -30,19 +32,26 @@ router.post('/', (req, res) => {
     // create a new tag
     Tag.create(req.body).then(() => {
         console.log("created");
+        res.status(200);
     })
 });
 
 router.put('/:id', (req, res) => {
     Tag.update(req.body, {
             where: { id: req.params.id }
+        }).then((data) => {
+            res.json(data);
+            res.status(200);
         })
         // update a tag's name by its `id` value
 });
 
 router.delete('/:id', (req, res) => {
-    Tag.destroy(req.params.id)
-        // delete on tag by its `id` value
+
+    Tag.destroy({ where: { id: req.params.id } }).then(() => {
+        res.status(200)
+    });
+    // delete on tag by its `id` value
 });
 
 module.exports = router;

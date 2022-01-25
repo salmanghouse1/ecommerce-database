@@ -21,16 +21,14 @@ router.get('/', (req, res) => {
 );
 
 router.get('/:id', (req, res) => {
-    try {
-        const categoryById = Category.findOne({
-            where: { id: req.params.id },
-            include: [Product]
-        })
-        res.status(200).json(categoryById);
-    } catch {
+    Category.findOne({
+        where: { id: req.params.id },
+        include: [Product]
+    }).then((data) => {
+        res.json(data);
+    })
 
-        res.status(500)
-    }
+
     // find one category by its `id` value
     // be sure to include its associated Products
 });
@@ -66,9 +64,7 @@ router.delete('/:id', (req, res) => {
         where: {
             id: req.params.id
         }
-    }).then()
-
-    res.status(200).console.log("deleted");
+    })
 });
 
 module.exports = router;

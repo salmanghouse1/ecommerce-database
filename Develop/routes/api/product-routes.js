@@ -6,17 +6,41 @@ const { DataTypes } = require("sequelize");
 
 // get all products
 router.get('/', (req, res) => {
-        const retrieveProducts = Product.findAll({
-            include: [{ model: Category }, { model: Tag }]
+        Product.findAll({
+            include: [
+                    Category,
+                    {
+                        model: Tag,
+                        through: ProductTag
+                    }
+                ]
                 // find all products
                 // be sure to include its associated Category and Tag data
-        });
-        res.json(body);
+        }).then((products) => {
+            res.json(products)
+        }).catch((err) => {
+            console.log(err);
+            res.status(500);
+        })
     })
     // get one product
 router.get('/:id', (req, res) => {
-    findByPk({
-            id: req.params.id
+    Product.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: [
+                Category,
+                {
+                    model: Tag,
+                    through: ProductTag
+                }
+            ]
+        }).then((products) => {
+            res.json(products)
+        }).catch((err) => {
+            console.log(err);
+            res.status(500);
         })
         // find a single product by its `id`
         // be sure to include its associated Category and Tag data
@@ -24,7 +48,6 @@ router.get('/:id', (req, res) => {
 
 // create new product
 router.post('/', (req, res) => {
-    Product.create(req.body);
     /* req.body should look like this...
       {
         product_name: "Basketball",
